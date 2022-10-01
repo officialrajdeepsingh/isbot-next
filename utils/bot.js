@@ -1,12 +1,7 @@
-
-/**
- * This sets `cookie` using the `res` object
- */
-
-export const setBot = (
-  res,
-  name
+export const getBots = (
+  response,
+  userAgent
 ) => {
-   res.setHeader('Set-bot', String(name))
+  response.cookies.set("userAgent",userAgent)
 }
 

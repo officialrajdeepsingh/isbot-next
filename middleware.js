@@ -1,33 +1,19 @@
 import { NextResponse, userAgent } from 'next/server'
-import useSWR from 'swr'
-const axios = require('axios');
 
-
-const fetcher = (url) => fetch(url).then((res) => res.text())
-
-export function middleware(request,event,response) {
+export function middleware(request,_event) {
    
-   const {isBot} = userAgent(request)
-    
+  
+  const {isBot} = userAgent(request)
+  
+  
+  
+  if (!isBot) {
+    return NextResponse.redirect(new URL('/bot', request.url))
+  }
+  
+  const response = NextResponse.next()
 
-    // event.waitUntil(
-    //     (async () => {
-    //         const newLocal = fetch('http://localhost:3000/api/test')
-    //         .then(function (response) {
-    //           console.log(response);
-    //         })
-    //         .catch(function (error) {
-    //           console.log(error);
-    //         })
-    //       })()
-    //     )
+  response.cookies.set("userAgent",userAgent(request))
 
-
-    console.log(isBot,' is bots ');
-    
-    if (isBot) {
-        return NextResponse.redirect(new URL('/bot', request.url))
-    }
-
-    return NextResponse.next()
+  return response
 }
